@@ -131,7 +131,7 @@
     div.id = `exam-${index}`;
     const subjectFormatted = cleanSubject(exam.subject);
     div.innerHTML = `
-      <div class="subject" style="color: ${exam.color};">${subjectFormatted} - ${new Date(exam.date).toLocaleString()}</div>
+      <div class="subject" style="color: ${exam.color};">${subjectFormatted} - ${new Date(exam.date).toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' })}</div>
       <div class="countdown" id="countdown-${index}">Loading...</div>
       <div class="progress-container"><div class="progress-bar" id="progress-${index}"></div></div>
     `;

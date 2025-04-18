@@ -73,10 +73,10 @@
 
  <script>
   const exams = [
-    { subject: "Islammee Tharubiyyathu 1", date: "2025-04-20T08:00:00+05:00", color: "#ff9999" },
-    { subject: "Islammee Tharubiyyathu 2", date: "2025-04-21T08:00:00+05:00", color: "#ff9999" },
-    { subject: "Dhivehibas 1", date: "2025-04-22T08:00:00+05:00", color: "#ffcc99" },
-    { subject: "Dhivehibas 2", date: "2025-04-23T08:00:00+05:00", color: "#ffcc99" },
+    { subject: "Islammee Tharubiyyathu P1", date: "2025-04-20T08:00:00+05:00", color: "#ff9999" },
+    { subject: "Islammee Tharubiyyathu P2", date: "2025-04-21T08:00:00+05:00", color: "#ff9999" },
+    { subject: "Dhivehibas P1", date: "2025-04-22T08:00:00+05:00", color: "#ffcc99" },
+    { subject: "Dhivehibas P2", date: "2025-04-23T08:00:00+05:00", color: "#ffcc99" },
     { subject: "Chemistry (Core)", date: "2025-04-30T08:00:00+05:00", color: "#99ccff" },
     { subject: "Chemistry (Extended)", date: "2025-04-30T08:00:00+05:00", color: "#99ccff" },
     { subject: "Mathematics (Core) P2", date: "2025-05-02T08:00:00+05:00", color: "#cc99ff" },
@@ -90,15 +90,15 @@
     { subject: "Physics (Extended)", date: "2025-05-09T08:00:00+05:00", color: "#66cccc" },
     { subject: "Travel & Tourism P1", date: "2025-05-09T13:00:00+05:00", color: "#ffcc66" },
     { subject: "Computer Science P1", date: "2025-05-12T08:00:00+05:00", color: "#99ffff" },
-    { subject: "Biology (Alternative to Practical)", date: "2025-05-13T08:00:00+05:00", color: "#99ffcc" },
+    { subject: "Biology (ATP)", date: "2025-05-13T08:00:00+05:00", color: "#99ffcc" },
     { subject: "Marine Science", date: "2025-05-13T13:00:00+05:00", color: "#3399ff" },
-    { subject: "Chemistry (Alternative to Practical)", date: "2025-05-14T08:00:00+05:00", color: "#99ccff" },
+    { subject: "Chemistry (ATP)", date: "2025-05-14T08:00:00+05:00", color: "#99ccff" },
     { subject: "Business Studies P1", date: "2025-05-16T08:00:00+05:00", color: "#ff9966" },
     { subject: "Marine Science P2", date: "2025-05-16T13:00:00+05:00", color: "#3399ff" },
     { subject: "Business Studies P2", date: "2025-05-19T08:00:00+05:00", color: "#ff9966" },
-    { subject: "Physics (Alternative to Practical)", date: "2025-05-20T08:00:00+05:00", color: "#66cccc" },
+    { subject: "Physics (ATP)", date: "2025-05-20T08:00:00+05:00", color: "#66cccc" },
     { subject: "Accounting P1", date: "2025-05-21T08:00:00+05:00", color: "#ffcc00" },
-    { subject: "English as a Second Language Listening", date: "2025-05-22T08:00:00+05:00", color: "#ffff99" },
+    { subject: "English as a Second Language [L]", date: "2025-05-22T08:00:00+05:00", color: "#ffff99" },
     { subject: "Travel & Tourism P2", date: "2025-05-22T13:00:00+05:00", color: "#ffcc66" },
     { subject: "Economics P1", date: "2025-05-23T08:00:00+05:00", color: "#00cc99" },
     { subject: "Accounting P2", date: "2025-05-29T08:00:00+05:00", color: "#ffcc00" },
@@ -169,7 +169,7 @@
       const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
       document.getElementById(`countdown-${index}`).textContent =
-        `${days} : ${hours.toString().padStart(2, "0")} : ${minutes.toString().padStart(2, "0")} : ${seconds.toString().padStart(2, "0")}`;
+        `${days} : ${hours.toString().padStart(2, "0")} : ${minutes.toString().padStart(2, "0")}`;
 
       if (!nextCountdown || distance < nextCountdown) {
         nextExam = cleanSubject(exam.subject);

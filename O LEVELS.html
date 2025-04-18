@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Exam Countdown</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #121212;
+      color: #f0f0f0;
+      padding: 0 20px 20px 20px;
+    }
+    .top-bar {
+      background-color: #1f1f1f;
+      padding: 15px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 1.1em;
+      font-weight: bold;
+      color: #ffcc00;
+      border-bottom: 2px solid #333;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+    h1 {
+      text-align: center;
+      margin: 40px 0 20px;
+    }
+    .exam {
+      background-color: #1e1e1e;
+      padding: 20px;
+      border-radius: 10px;
+      margin-bottom: 15px;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.05);
+    }
+    .subject {
+      font-size: 1.2em;
+      margin-bottom: 10px;
+    }
+    .countdown {
+      font-size: 1.5em;
+      color: #90caf9;
+    }
+    .progress-container {
+      height: 10px;
+      background: #444;
+      border-radius: 5px;
+      overflow: hidden;
+      margin-top: 10px;
+    }
+    .progress-bar {
+      height: 100%;
+      background-color: #ffcc00;
+      transition: width 0.5s;
+    }
+    .today {
+      border: 2px solid #ff4444;
+      box-shadow: 0 0 10px #ff4444;
+    }
+  </style>
+</head>
+<body>
+  <div class="top-bar">
+    <div id="current-date">Loading date...</div>
+    <div id="next-exam">Loading next exam...</div>
+  </div>
+  <h1>Cambridge IGCSE Exam Countdown</h1>
+  <div id="countdowns"></div>
+
+  <script>
+    const exams = [
+      { subject: "Islammee Tharubiyyathu 1", date: "2025-04-20T08:00:00+05:00", color: "#ff9999" },
+      { subject: "Islammee Tharubiyyathu 2", date: "2025-04-21T08:00:00+05:00", color: "#ff9999" },
+      { subject: "Dhivehibas 1", date: "2025-04-22T08:00:00+05:00", color: "#ffcc99" },
+      { subject: "Dhivehibas 2", date: "2025-04-23T08:00:00+05:00", color: "#ffcc99" },
+    //  { subject: "Chemistry (Core)", date: "2025-04-30T08:00:00+05:00", color: "#99ccff" },
+    //  { subject: "Chemistry (Extended)", date: "2025-04-30T08:00:00+05:00", color: "#99ccff" },
+    //  { subject: "Mathematics (Core) P2", date: "2025-05-02T08:00:00+05:00", color: "#cc99ff" },
+      { subject: "Mathematics (Extended) P2", date: "2025-05-02T13:00:00+05:00", color: "#cc99ff" },
+    //  { subject: "Biology (Core)", date: "2025-05-06T08:00:00+05:00", color: "#99ffcc" },
+    //  { subject: "Biology (Extended)", date: "2025-05-06T08:00:00+05:00", color: "#99ffcc" },
+    //  { subject: "Mathematics (Core) P4", date: "2025-05-07T13:00:00+05:00", color: "#cc99ff" },
+      { subject: "Mathematics (Extended) P4", date: "2025-05-07T13:00:00+05:00", color: "#cc99ff" },
+      { subject: "English as a Second Language", date: "2025-05-08T08:00:00+05:00", color: "#ffff99" },
+    //  { subject: "Physics (Core)", date: "2025-05-09T08:00:00+05:00", color: "#66cccc" },
+    //  { subject: "Physics (Extended)", date: "2025-05-09T08:00:00+05:00", color: "#66cccc" },
+      { subject: "Travel & Tourism P1", date: "2025-05-09T13:00:00+05:00", color: "#ffcc66" },
+    //  { subject: "Computer Science P1", date: "2025-05-12T08:00:00+05:00", color: "#99ffff" },
+    //  { subject: "Biology (Alternative to Practical)", date: "2025-05-13T08:00:00+05:00", color: "#99ffcc" },
+    //  { subject: "Marine Science", date: "2025-05-13T13:00:00+05:00", color: "#3399ff" },
+    //  { subject: "Chemistry (Alternative to Practical)", date: "2025-05-14T08:00:00+05:00", color: "#99ccff" },
+      { subject: "Business Studies P1", date: "2025-05-16T08:00:00+05:00", color: "#ff9966" },
+    //  { subject: "Marine Science P2", date: "2025-05-16T13:00:00+05:00", color: "#3399ff" },
+      { subject: "Business Studies P2", date: "2025-05-19T08:00:00+05:00", color: "#ff9966" },
+    //  { subject: "Physics (Alternative to Practical)", date: "2025-05-20T08:00:00+05:00", color: "#66cccc" },
+      { subject: "Accounting P1", date: "2025-05-21T08:00:00+05:00", color: "#ffcc00" },
+      { subject: "English as a Second Language Listening", date: "2025-05-22T08:00:00+05:00", color: "#ffff99" },
+      { subject: "Travel & Tourism P2", date: "2025-05-22T13:00:00+05:00", color: "#ffcc66" },
+      { subject: "Economics P1", date: "2025-05-23T08:00:00+05:00", color: "#00cc99" },
+      { subject: "Accounting P2", date: "2025-05-29T08:00:00+05:00", color: "#ffcc00" },
+    //  { subject: "Physics MCQ Core", date: "2025-06-04T08:00:00+05:00", color: "#66cccc" },
+    //  { subject: "Physics MCQ Extended", date: "2025-06-04T08:00:00+05:00", color: "#66cccc" },
+      { subject: "Economics P2", date: "2025-06-05T08:00:00+05:00", color: "#00cc99" },
+    //  { subject: "Chemistry MCQ Core", date: "2025-06-10T08:00:00+05:00", color: "#99ccff" },
+    //  { subject: "Chemistry MCQ Extended", date: "2025-06-10T08:00:00+05:00", color: "#99ccff" },
+    //  { subject: "Biology MCQ Core", date: "2025-06-11T08:00:00+05:00", color: "#99ffcc" },
+    //  { subject: "Biology MCQ Extended", date: "2025-06-11T08:00:00+05:00", color: "#99ffcc" }
+    ];
+
+    exams.sort((a, b) => new Date(a.date) - new Date(b.date));
+
+    const container = document.getElementById("countdowns");
+
+    exams.forEach((exam, index) => {
+      const div = document.createElement("div");
+      div.className = "exam";
+      div.id = `exam-${index}`;
+      div.innerHTML = `
+        <div class="subject" style="color: ${exam.color};">${exam.subject} - ${new Date(exam.date).toLocaleString()}</div>
+        <div class="countdown" id="countdown-${index}">Loading...</div>
+        <div class="progress-container"><div class="progress-bar" id="progress-${index}"></div></div>
+      `;
+      container.appendChild(div);
+    });
+
+    function updateCountdowns() {
+      const now = new Date();
+      document.getElementById("current-date").textContent = now.toLocaleString();
+
+      let nextExam = null;
+      let nextCountdown = null;
+
+      exams.forEach((exam, index) => {
+        const target = new Date(exam.date);
+        const distance = target - now;
+
+        const startDate = new Date(exams[0].date);
+        const totalTime = target - startDate;
+        const elapsed = now - startDate;
+        const progress = Math.min(Math.max(elapsed / totalTime, 0), 1) * 100;
+        document.getElementById(`progress-${index}`).style.width = `${progress}%`;
+
+        const examDiv = document.getElementById(`exam-${index}`);
+        examDiv.classList.toggle("today", now.toDateString() === target.toDateString());
+
+        if (distance < 0) {
+          document.getElementById(`countdown-${index}`).textContent = "Exam started or passed";
+          return;
+        }
+
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        document.getElementById(`countdown-${index}`).textContent =
+          `${days}d ${hours}h ${minutes}m ${seconds}s`;
+
+        if (!nextCountdown || distance < nextCountdown) {
+          nextExam = exam;
+          nextCountdown = distance;
+        }
+      });
+
+      if (nextExam && nextCountdown) {
+        const d = Math.floor(nextCountdown / (1000 * 60 * 60 * 24));
+        const h = Math.floor((nextCountdown % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const m = Math.floor((nextCountdown % (1000 * 60 * 60)) / (1000 * 60));
+        const s = Math.floor((nextCountdown % (1000 * 60)) / 1000);
+        document.getElementById("next-exam").textContent =
+          `Next: ${nextExam.subject} in ${d}d ${h}h ${m}m ${s}s`;
+      }
+    }
+
+    setInterval(updateCountdowns, 1000);
+    updateCountdowns();
+  </script>
+</body>
+</html>

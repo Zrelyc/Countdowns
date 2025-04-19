@@ -156,10 +156,9 @@
     return subject
       .replace(/Islammee Tharubiyyathu/g, "Islam")
       .replace(/Dhivehibas/g, "Dhivehi")
-      .replace(/\s*\(Core\)/gi, " [C]")
-      .replace(/\s*\(Extended\)/gi, " [E]")
-      .replace(/\bCore\b/gi, "[C]")
-      .replace(/\bExtended\b/gi, "[E]");
+      .replace(/Mathematics/g, "Mathematics")
+      .replace(/\(Core\)/gi, "[C]")
+      .replace(/\(Extended\)/gi, "[E]");
   }
 
   exams.forEach((exam, index) => {
@@ -180,7 +179,7 @@
     business: true,
     core: true,
     extended: true,
-    optional: null
+    optional: ""
   };
 
   function isMandatory(subject) {
@@ -190,18 +189,19 @@
   function matchesFilter(subject) {
     const isScience = /(Physics|Biology|Chemistry)/.test(subject);
     const isBusiness = /(Business Studies|Accounting|Economics)/.test(subject);
-    const isCore = /\b(C|Core)\b/.test(subject);
-    const isExtended = /\b(E|Extended)\b/.test(subject);
+    const isCore = /\[C\]/.test(subject);
+    const isExtended = /\[E\]/.test(subject);
     const isOptional = optionalSubjects.includes(subject);
 
     if (isMandatory(subject)) return true;
-    if (filters.optional && subject.includes(filters.optional)) return true;
+    if (filters.optional) return subject.includes(filters.optional);
 
-    if (isOptional && subject !== filters.optional) return false;
+    if (isOptional) return false;
     if (isScience && !filters.science) return false;
     if (isBusiness && !filters.business) return false;
     if (isCore && !filters.core) return false;
     if (isExtended && !filters.extended) return false;
+
     return true;
   }
 
@@ -216,9 +216,9 @@
       const visible = matchesFilter(subject);
 
       div.classList.toggle("hidden", !visible);
+
       const target = new Date(exam.date);
       const timeLeft = target - now;
-
       const startDate = new Date(exams[0].date);
       const totalTime = target - startDate;
       const elapsed = now - startDate;
